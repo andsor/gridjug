@@ -6,6 +6,10 @@ gridjug
    :target: https://travis-ci.org/andsor/gridjug
    :alt: Testing status
 
+.. image:: https://coveralls.io/repos/andsor/gridjug/badge.svg?branch=master&service=github
+   :target: https://coveralls.io/github/andsor/gridjug?branch=master
+   :alt: Test coverage
+
 .. image:: https://img.shields.io/github/release/andsor/gridjug.svg
   :target: https://github.com/andsor/gridjug/releases/latest
   :alt: Latest release on GitHub
