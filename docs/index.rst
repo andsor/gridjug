@@ -6,6 +6,9 @@ Welcome to gridjug!
 
    .. include:: about-include.rst
 
+Table of Contents
+-----------------
+
 .. toctree::
    :maxdepth: 2
 

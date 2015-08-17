@@ -46,6 +46,10 @@ gridjug
    :target: http://gridjug.readthedocs.org/en/stable
    :alt: Documentation Status
 
+.. image:: https://zenodo.org/badge/6089/andsor/gridjug.svg
+   :target: https://zenodo.org/badge/latestdoi/6089/andsor/gridjug
+   :alt: Citation
+
 A light-weight wrapper to run Jug with GridMap on a Grid Engine cluster
 
 * **Documentation**: http://gridjug.readthedocs.org
