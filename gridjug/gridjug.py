@@ -3,7 +3,14 @@
 from __future__ import absolute_import, division, print_function
 
 
-def grid_jug(jug_args, jug_nworkers=4, name='gridjug', **kwargs):
+def grid_jug(
+    jugfile,
+    jugdir=None,
+    jug_args=None,
+    jug_nworkers=4,
+    name='gridjug',
+    **kwargs
+):
     """
     A light-weight wrapper to run Jug with GridMap on a Grid Engine cluster
 
@@ -18,13 +25,18 @@ def grid_jug(jug_args, jug_nworkers=4, name='gridjug', **kwargs):
 
     Parameters
     ----------
+    jugfile : path
+        Path to the jugfile
+
+    jugdir : path
+        Where to save intermediate results
 
     jug_args : list
-        Jug command-line arguments.
+        Other jug command-line arguments.
         Note that ``'execute'`` is already included.
         The command line is roughly equivalent to:
 
-            'jug execute ' + ' '.join(jug_args)
+            'jug execute {jugfile} ' + ' '.join(jug_args)
 
     jug_nworkers : int, optional
         number of Grid Engine tasks to start
@@ -48,7 +60,11 @@ def grid_jug(jug_args, jug_nworkers=4, name='gridjug', **kwargs):
     import gridmap
 
     jug_argv = ['jug', 'execute']
-    jug_argv.extend(jug_args)
+    jug_argv.append('{}'.format(jugfile))
+    if jugdir is not None:
+        jug_argv.append('--jugdir={}'.format(jugdir))
+    if jug_args is not None:
+        jug_argv.extend(jug_args)
 
     # function arguments for grid_map
     # note that there are multiple lists here
