@@ -10,6 +10,22 @@ gridjug
    :target: https://coveralls.io/github/andsor/gridjug?branch=master
    :alt: Test coverage
 
+.. image:: https://img.shields.io/pypi/v/gridjug.svg
+  :target: https://pypi.python.org/pypi/gridjug
+  :alt: PyPI version
+  
+.. image:: https://img.shields.io/pypi/pyversions/gridjug.svg
+  :target: https://pypi.python.org/pypi/gridjug
+  :alt: Python versions
+  
+.. image:: https://img.shields.io/pypi/status/gridjug.svg
+  :target: https://pypi.python.org/pypi/gridjug
+  :alt: Status
+
+.. image:: https://img.shields.io/pypi/l/gridjug.svg
+  :target: http://gridjug.readthedocs.org/en/stable/license.html
+  :alt: License
+
 .. image:: https://img.shields.io/github/release/andsor/gridjug.svg
   :target: https://github.com/andsor/gridjug/releases/latest
   :alt: Latest release on GitHub
