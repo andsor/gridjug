@@ -291,4 +291,6 @@ python_version = '.'.join(map(str, sys.version_info[0:2]))
 intersphinx_mapping = {
     'sphinx': ('http://sphinx.pocoo.org', None),
     'python': ('http://docs.python.org/' + python_version, None),
+    'gridmap': ('http://gridmap.readthedocs.org/en/latest', None),
+    'jug': ('http://jug.readthedocs.org/en/latest', None),
 }
