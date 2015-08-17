@@ -21,6 +21,21 @@ from sphinx import apidoc
 # Are we building on ReadTheDocs?
 on_rtd = os.environ.get('READTHEDOCS', None) == 'True'
 
+
+# mock modules for Read the Docs
+# http://read-the-docs.readthedocs.org/en/latest/faq.html#i-get-import-errors-on-libraries-that-depend-on-c-modules
+from unittest.mock import MagicMock
+
+
+class Mock(MagicMock):
+    @classmethod
+    def __getattr__(cls, name):
+        return Mock()
+
+MOCK_MODULES = ['gridmap', 'jug', ]
+sys.modules.update((mod_name, Mock()) for mod_name in MOCK_MODULES)
+
+
 __location__ = os.path.join(os.getcwd(), os.path.dirname(
     inspect.getfile(inspect.currentframe())))
 

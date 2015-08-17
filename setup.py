@@ -26,6 +26,10 @@ except ImportError:  # then fall back to Python 2
 __location__ = os.path.join(os.getcwd(), os.path.dirname(
     inspect.getfile(inspect.currentframe())))
 
+# Are we building on ReadTheDocs?
+on_rtd = os.environ.get('READTHEDOCS', None) == 'True'
+
+
 # determine root package and package path if namespace package is used
 pyscaffold_version = "2.2.1"
 package = "gridjug"
@@ -193,7 +197,11 @@ def setup_package():
     docs_build_path = os.path.join(docs_path, "_build")
     needs_pytest = {'pytest', 'test', 'ptr'}.intersection(sys.argv)
     pytest_runner = ['pytest-runner'] if needs_pytest else []
-    install_reqs = get_install_requirements("requirements.txt")
+    install_reqs = (
+        get_install_requirements("requirements.txt")
+        if not on_rtd
+        else []
+    )
     metadata, console_scripts, extras_require, data_files = read_setup_cfg()
 
     command_options = {
