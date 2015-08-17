@@ -22,6 +22,16 @@ THIS_DIR = os.path.dirname(
 PRIMES_JUGFILE = os.path.join(THIS_DIR, 'primes.py')
 PRIMES_JUGDIR = os.path.join(THIS_DIR, 'primes.jugdata')
 
+# Determine whether we are on NLD clusters
+ON_NLD_CLUSTER = (os.environ.get('SGE_CLUSTER_NAME', None) == 'NLD')
+ON_NLD_LOGIN = ON_NLD_CLUSTER and (
+    os.environ.get('CLUSTERNAME', None) == 'login'
+)
+
+NLD_GRIDMAP_PARAMS = {
+    'queue': 'frigg.q,skadi.q,navier.q',
+}
+
 
 @pytest.yield_fixture
 def jugdir():
@@ -58,3 +68,8 @@ def test_access_results(jugdir):
     assert jug.value(jugspace['primes10']) == [
         True, True, False, True, False, True, False, False, False
     ]
+
+
+@pytest.mark.skipif(not ON_NLD_LOGIN)
+def test_nld_execute():
+    gridjug.grid_jug(jugfile=PRIMES_JUGFILE, local=False)
