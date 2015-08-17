@@ -1,5 +1,12 @@
 # coding: utf-8
 """
+Notes
+-----
+
+For some reason, pickle does not work on some cluster environments if the
+submodule has the same name as the package.
+Hence, we call the submodule ``grid_jug`` instead of ``gridjug``.
+
 See Also
 --------
 
@@ -16,6 +23,6 @@ from __future__ import absolute_import, division, print_function
 
 
 import pkg_resources
-from gridjug.gridjug import grid_jug
+from gridjug.grid_jug import grid_jug
 
 __version__ = pkg_resources.get_distribution(__name__).version
