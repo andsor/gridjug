@@ -23,6 +23,7 @@ ON_NLD_LOGIN = ON_NLD_CLUSTER and (
     os.environ.get('CLUSTERNAME', None) == 'login'
 )
 
+TEMP_DIR = None
 if ON_NLD_LOGIN:
     TEMP_DIR = os.path.join(THIS_DIR, 'tmp')
     if not os.path.isdir(TEMP_DIR):
