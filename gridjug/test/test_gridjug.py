@@ -3,7 +3,11 @@
 import inspect
 import os
 import shutil
-import tempfile
+try:
+    from tempfile import TemporaryDirectory  # Python >= 3.2
+except ImportError:  # Python < 3.2
+    # http://stackoverflow.com/a/19299884/2366781
+    from _tempfile import TemporaryDirectory
 
 import gridjug
 import jug
@@ -19,7 +23,7 @@ PRIMES_JUGDIR = os.path.join(THIS_DIR, 'primes.jugdata')
 
 @pytest.yield_fixture
 def jugdir():
-    with tempfile.TemporaryDirectory() as ret:
+    with TemporaryDirectory() as ret:
         yield ret
 
 
