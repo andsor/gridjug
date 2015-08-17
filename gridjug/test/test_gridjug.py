@@ -3,15 +3,17 @@
 import inspect
 import os
 import shutil
+
+import gridjug
+import jug
+import pytest
+
 try:
     from tempfile import TemporaryDirectory  # Python >= 3.2
 except ImportError:  # Python < 3.2
     # http://stackoverflow.com/a/19299884/2366781
     from _tempfile import TemporaryDirectory
 
-import gridjug
-import jug
-import pytest
 
 # http://stackoverflow.com/a/50905/2366781
 THIS_DIR = os.path.dirname(
