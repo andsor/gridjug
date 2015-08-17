@@ -2,6 +2,10 @@
 gridjug
 =======
 
+.. image:: https://travis-ci.org/andsor/gridjug.svg?branch=master
+   :target: https://travis-ci.org/andsor/gridjug
+   :alt: Testing status
+
 .. image:: https://img.shields.io/github/release/andsor/gridjug.svg
   :target: https://github.com/andsor/gridjug/releases/latest
   :alt: Latest release on GitHub
