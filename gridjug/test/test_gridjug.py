@@ -15,6 +15,8 @@ THIS_DIR = os.path.dirname(
 PRIMES_JUGFILE = os.path.join(THIS_DIR, 'primes.py')
 PRIMES_JUGDIR = os.path.join(THIS_DIR, 'primes.jugdata')
 
+FAILING_JUGFILE = os.path.join(THIS_DIR, 'failing.py')
+
 # Determine whether we are on NLD clusters
 ON_NLD_CLUSTER = (os.environ.get('SGE_CLUSTER_NAME', None) == 'NLD')
 ON_NLD_LOGIN = ON_NLD_CLUSTER and (
@@ -76,6 +78,26 @@ def test_access_results(tmpdir):
     ]
 
 
+def test_failing(tmpdir):
+    jugdir = tmpdir
+    res = gridjug.grid_jug(
+        jugfile=FAILING_JUGFILE, jugdir=jugdir.strpath, local=True,
+    )
+    for result in res:
+        assert isinstance(result, RuntimeError)
+
+
+def test_failing_keep_going(tmpdir):
+    jugdir = tmpdir
+    gridjug.grid_jug(
+        jugfile=FAILING_JUGFILE, jugdir=jugdir.strpath, local=True,
+        keep_going=True,
+    )
+    _, jugspace = jug.init(jugfile=FAILING_JUGFILE, jugdir=jugdir.strpath)
+    for n, task in zip(range(2, 11), jugspace['primes10']):
+        assert task.can_load() == (n != 6)
+
+
 @pytest.mark.skipif(not ON_NLD_LOGIN, reason='Not on NLD cluster login node')
 def test_nld_execute():
     gridjug.grid_jug(
@@ -132,3 +154,26 @@ def test_nld_access_results(jugdir):
     assert jug.value(jugspace['primes10']) == [
         True, True, False, True, False, True, False, False, False
     ]
+
+
+@pytest.mark.skipif(not ON_NLD_LOGIN, reason='Not on NLD cluster login node')
+def test_nld_failing(jugdir):
+    with pytest.raises(RuntimeError):
+        gridjug.grid_jug(
+            jugfile=FAILING_JUGFILE,
+            jugdir=jugdir,
+            **NLD_GRIDMAP_PARAMS
+        )
+
+
+@pytest.mark.skipif(not ON_NLD_LOGIN, reason='Not on NLD cluster login node')
+def test_nld_failing_keep_going(jugdir):
+    gridjug.grid_jug(
+        jugfile=FAILING_JUGFILE,
+        jugdir=jugdir,
+        keep_going=True,
+        **NLD_GRIDMAP_PARAMS
+    )
+    _, jugspace = jug.init(jugfile=FAILING_JUGFILE, jugdir=jugdir)
+    for n, task in zip(range(2, 11), jugspace['primes10']):
+        assert task.can_load() == (n != 6)

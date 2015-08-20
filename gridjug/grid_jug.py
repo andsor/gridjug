@@ -9,6 +9,7 @@ def grid_jug(
     jug_args=None,
     jug_nworkers=4,
     name='gridjug',
+    keep_going=False,
     **kwargs
 ):
     """
@@ -45,6 +46,12 @@ def grid_jug(
     name : str, optional
         base name of the Grid Engine task
 
+    keep_going : bool, optional
+        Strongly recommended! Defaults to ``False``: if a single Jug task
+        fails, GridMap will cancel all jobs!
+        If ``True``, Jug does not raise an exception but keeps retrying the
+        task.
+
     **kwargs : keyword-dict, optional
         additional options passed through to :any:`gridmap.grid_map`
 
@@ -63,6 +70,8 @@ def grid_jug(
     jug_argv.append('{}'.format(jugfile))
     if jugdir is not None:
         jug_argv.append('--jugdir={}'.format(jugdir))
+    if keep_going:
+        jug_argv.append('--keep-going')
     if jug_args is not None:
         jug_argv.extend(jug_args)
 
