@@ -29,6 +29,7 @@ if ON_NLD_LOGIN:
 
 NLD_GRIDMAP_PARAMS = {
     'local': False,
+    'force_cluster': True,
     'temp_dir': TEMP_DIR,
     'quiet': False,
     'queue': 'frigg.q,skadi.q',
@@ -73,11 +74,6 @@ def test_access_results(tmpdir):
     assert jug.value(jugspace['primes10']) == [
         True, True, False, True, False, True, False, False, False
     ]
-
-
-@pytest.mark.skipif(not ON_NLD_LOGIN, reason='Not on NLD cluster login node')
-def test_gridmap_has_drmaa():
-    import drmaa
 
 
 @pytest.mark.skipif(not ON_NLD_LOGIN, reason='Not on NLD cluster login node')
