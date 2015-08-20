@@ -10,6 +10,7 @@ def grid_jug(
     jug_nworkers=4,
     name='gridjug',
     keep_going=False,
+    verbose=False,
     **kwargs
 ):
     """
@@ -52,6 +53,9 @@ def grid_jug(
         If ``True``, Jug does not raise an exception but keeps retrying the
         task.
 
+    verbose : bool, optional
+        If ``True``, Jug logs ``INFO`` events
+
     **kwargs : keyword-dict, optional
         additional options passed through to :any:`gridmap.grid_map`
 
@@ -72,6 +76,8 @@ def grid_jug(
         jug_argv.append('--jugdir={}'.format(jugdir))
     if keep_going:
         jug_argv.append('--keep-going')
+    if verbose:
+        jug_argv.append('--verbose=INFO')
     if jug_args is not None:
         jug_argv.extend(jug_args)
 
