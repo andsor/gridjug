@@ -86,6 +86,17 @@ def test_failing(tmpdir):
         assert isinstance(result, RuntimeError)
 
 
+def test_failing_keep_going(tmpdir):
+    jugdir = tmpdir
+    gridjug.grid_jug(
+        jugfile=FAILING_JUGFILE, jugdir=jugdir.strpath, local=True,
+        keep_going=True,
+    )
+    _, jugspace = jug.init(jugfile=FAILING_JUGFILE, jugdir=jugdir.strpath)
+    for n, task in zip(range(2, 11), jugspace['primes10']):
+        assert task.can_load() == (n != 6)
+
+
 @pytest.mark.skipif(not ON_NLD_LOGIN, reason='Not on NLD cluster login node')
 def test_gridmap_has_drmaa():
     import drmaa
@@ -151,8 +162,22 @@ def test_nld_access_results(jugdir):
 
 @pytest.mark.skipif(not ON_NLD_LOGIN, reason='Not on NLD cluster login node')
 def test_nld_failing(jugdir):
+    with pytest.raises(RuntimeError):
+        gridjug.grid_jug(
+            jugfile=FAILING_JUGFILE,
+            jugdir=jugdir,
+            **NLD_GRIDMAP_PARAMS
+        )
+
+
+@pytest.mark.skipif(not ON_NLD_LOGIN, reason='Not on NLD cluster login node')
+def test_nld_failing_keep_going(jugdir):
     gridjug.grid_jug(
         jugfile=FAILING_JUGFILE,
         jugdir=jugdir,
+        keep_going=True,
         **NLD_GRIDMAP_PARAMS
     )
+    _, jugspace = jug.init(jugfile=FAILING_JUGFILE, jugdir=jugdir)
+    for n, task in zip(range(2, 11), jugspace['primes10']):
+        assert task.can_load() == (n != 6)
