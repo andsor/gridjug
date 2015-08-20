@@ -31,7 +31,7 @@ if ON_NLD_LOGIN:
 
 NLD_GRIDMAP_PARAMS = {
     'local': False,
-    'force_cluster': True,
+    'require_cluster': True,
     'temp_dir': TEMP_DIR,
     'quiet': False,
     'queue': 'frigg.q,skadi.q',
