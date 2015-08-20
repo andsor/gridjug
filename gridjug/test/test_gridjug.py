@@ -15,6 +15,8 @@ THIS_DIR = os.path.dirname(
 PRIMES_JUGFILE = os.path.join(THIS_DIR, 'primes.py')
 PRIMES_JUGDIR = os.path.join(THIS_DIR, 'primes.jugdata')
 
+FAILING_JUGFILE = os.path.join(THIS_DIR, 'failing.py')
+
 # Determine whether we are on NLD clusters
 ON_NLD_CLUSTER = (os.environ.get('SGE_CLUSTER_NAME', None) == 'NLD')
 ON_NLD_LOGIN = ON_NLD_CLUSTER and (
@@ -73,6 +75,15 @@ def test_access_results(tmpdir):
     assert jug.value(jugspace['primes10']) == [
         True, True, False, True, False, True, False, False, False
     ]
+
+
+def test_failing(tmpdir):
+    jugdir = tmpdir
+    res = gridjug.grid_jug(
+        jugfile=FAILING_JUGFILE, jugdir=jugdir.strpath, local=True,
+    )
+    for result in res:
+        assert isinstance(result, RuntimeError)
 
 
 @pytest.mark.skipif(not ON_NLD_LOGIN, reason='Not on NLD cluster login node')
@@ -136,3 +147,12 @@ def test_nld_access_results(jugdir):
     assert jug.value(jugspace['primes10']) == [
         True, True, False, True, False, True, False, False, False
     ]
+
+
+@pytest.mark.skipif(not ON_NLD_LOGIN, reason='Not on NLD cluster login node')
+def test_nld_failing(jugdir):
+    gridjug.grid_jug(
+        jugfile=FAILING_JUGFILE,
+        jugdir=jugdir,
+        **NLD_GRIDMAP_PARAMS
+    )
