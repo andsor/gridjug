@@ -2,13 +2,11 @@
 
 import inspect
 import os
-import shutil
 import tempfile
 
 import gridjug
 import jug
 import pytest
-
 
 # http://stackoverflow.com/a/50905/2366781
 THIS_DIR = os.path.dirname(
@@ -128,7 +126,7 @@ def test_nld_init_jugspace(jugdir):
 
 
 @pytest.mark.skipif(not ON_NLD_LOGIN, reason='Not on NLD cluster login node')
-def test_access_results(jugdir):
+def test_nld_access_results(jugdir):
     gridjug.grid_jug(
         jugfile=PRIMES_JUGFILE,
         jugdir=jugdir,
