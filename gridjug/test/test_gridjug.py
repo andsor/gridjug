@@ -98,6 +98,20 @@ def test_failing_keep_going(tmpdir):
         assert task.can_load() == (n != 6)
 
 
+def test_jug_stdout(capsys):
+    gridjug.grid_jug(jugfile=PRIMES_JUGFILE, local=True)
+    out = capsys.readouterr()[0]
+    assert 'Executed' in out
+
+
+def test_jug_capture_stdout(capsys):
+    gridjug.grid_jug(
+        jugfile=PRIMES_JUGFILE, local=True, capture_jug_stdout=True
+    )
+    out = capsys.readouterr()[0]
+    assert not out
+
+
 @pytest.mark.skipif(not ON_NLD_LOGIN, reason='Not on NLD cluster login node')
 def test_nld_execute():
     gridjug.grid_jug(

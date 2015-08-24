@@ -2,6 +2,26 @@
 
 from __future__ import absolute_import, division, print_function
 
+import io
+
+try:  # Python >= 3.4
+    from contextlib import redirect_stdout
+except ImportError:
+    # Credit: J.F. Sebastian http://stackoverflow.com/a/22434262/2366781
+    import sys
+    from contextlib import contextmanager
+
+    @contextmanager
+    def redirect_stdout(new_target):
+        # replace sys.stdout
+        old_target, sys.stdout = sys.stdout, new_target
+        try:
+            # run some code with the replaced stdout
+            yield new_target
+        finally:
+            # restore to the previous value
+            sys.stdout = old_target
+
 
 def grid_jug(
     jugfile,
@@ -11,6 +31,7 @@ def grid_jug(
     name='gridjug',
     keep_going=False,
     verbose=False,
+    capture_jug_stdout=False,
     **kwargs
 ):
     """
@@ -56,6 +77,10 @@ def grid_jug(
     verbose : bool, optional
         If ``True``, Jug logs ``INFO`` events
 
+    capture_jug_stdout : bool, optional
+        Defaults to ``False``.
+        If ``True``, captures Jug's task summary printed to stdout.
+
     **kwargs : keyword-dict, optional
         additional options passed through to :any:`gridmap.grid_map`
 
@@ -100,7 +125,7 @@ def grid_jug(
     # https://github.com/pygridtools/gridmap/blob/master/gridmap/job.py#L929
     # https://github.com/pygridtools/gridmap/blob/master/gridmap/job.py#L933
     #
-    args_list = jug_nworkers * [[jug_argv]]
+    args_list = jug_nworkers * [[capture_jug_stdout, jug_argv]]
 
     return gridmap.grid_map(
         f=_jug_main,
@@ -110,9 +135,17 @@ def grid_jug(
     )
 
 
-def _jug_main(*args, **kwargs):
+def _jug_main(capture_stdout, *args, **kwargs):
     """
     wrapper function for pickle
     """
     import jug
-    return jug.jug.main(*args, **kwargs)
+
+    if capture_stdout:
+        f = io.StringIO()
+        with redirect_stdout(f):
+            ret = jug.jug.main(*args, **kwargs)
+    else:
+        ret = jug.jug.main(*args, **kwargs)
+
+    return ret
