@@ -1,6 +1,9 @@
 Changelog
 =========
 
+* :release:`0.4.0 <2015-08-24>`
+* :feature:`8` Add capture_jug_stdout option
+
 * :release:`0.3.0 <2015-08-20>`
 * :feature:`3` Implement Jug logging (verbose option)
 * :feature:`1` Implement keep_going option
